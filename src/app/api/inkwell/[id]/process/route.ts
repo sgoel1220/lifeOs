@@ -75,6 +75,15 @@ export async function POST(
 
   const { id } = await params;
 
+  // Optional model override from request body
+  let model: string | undefined;
+  try {
+    const body = await request.json().catch(() => ({}));
+    if (typeof body?.model === "string" && body.model.length > 0) {
+      model = body.model;
+    }
+  } catch {}
+
   try {
     const dump = await prisma.brainDump.findUnique({ where: { id } });
     if (!dump) {
@@ -86,9 +95,10 @@ export async function POST(
       return NextResponse.json({ skipped: true });
     }
 
-    const rawResponse = await aiProvider.chat([
-      { role: "user", content: buildPrompt(dump.content) },
-    ]);
+    const rawResponse = await aiProvider.chat(
+      [{ role: "user", content: buildPrompt(dump.content) }],
+      model ? { model } : undefined
+    );
 
     let items: ProcessedItemInput[] = [];
     try {

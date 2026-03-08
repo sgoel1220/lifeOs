@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/ui/Logo";
+import SettingsSheet from "@/components/layout/SettingsSheet";
 import {
   Sidebar,
   SidebarContent,
@@ -89,6 +90,7 @@ export default function AppSidebar() {
           <kbd className="bg-accent px-1.5 py-0.5 rounded text-[10px] font-mono">/</kbd>{" "}
           to capture
         </p>
+        <SettingsSheet />
       </SidebarFooter>
     </Sidebar>
   );

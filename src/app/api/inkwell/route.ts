@@ -45,6 +45,27 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
+    // Catch-up: process any unprocessed dumps for this user (fire-and-forget)
+    after(async () => {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+      const internalKey = process.env.INTERNAL_API_KEY;
+      if (!internalKey) return;
+      const pending = await prisma.brainDump.findMany({
+        where: { userId, processed: false },
+        select: { id: true },
+        take: 10,
+      });
+      if (pending.length === 0) return;
+      await Promise.all(
+        pending.map(({ id }) =>
+          fetch(`${appUrl}/api/inkwell/${id}/process`, {
+            method: "POST",
+            headers: { "x-internal-key": internalKey },
+          }).catch((err) => console.error("Catch-up process failed for dump", id, err))
+        )
+      );
+    });
+
     return NextResponse.json({ dumps, total, page, limit });
   } catch (error) {
     console.error("GET /api/inkwell error:", error);
