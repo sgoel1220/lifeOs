@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full bleed background (maskable — safe zone is inner 80%) -->
+  <rect width="512" height="512" fill="#DFF0D8"/>
+
+  <!-- Stem -->
+  <line x1="256" y1="420" x2="256" y2="232" stroke="#4A7A58" stroke-width="22" stroke-linecap="round"/>
+
+  <!-- Left leaf -->
+  <path d="M256 340 C210 306 140 276 124 192 C176 178 236 220 256 312 Z" fill="#8BAF7C"/>
+
+  <!-- Right leaf -->
+  <path d="M256 272 C302 242 370 196 388 112 C334 106 272 160 256 240 Z" fill="#5E9467"/>
+
+  <!-- Bud -->
+  <ellipse cx="256" cy="210" rx="34" ry="44" fill="#8BAF7C" opacity="0.9"/>
+</svg>
